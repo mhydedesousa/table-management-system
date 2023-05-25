@@ -22,9 +22,10 @@ const http_errors_1 = require("http-errors");
 const cors_1 = __importDefault(require("cors"));
 const tableService_1 = require("./services/tableService");
 const orderService_1 = require("./services/orderService");
+const config_1 = __importDefault(require("./config"));
 dotenv_1.default.config({ path: ".env" });
 const app = (0, express_1.default)();
-const port = process.env.PORT;
+const port = config_1.default.PORT;
 // request logger
 app.use((req, _res, next) => {
     console.info(`${req.method} request to "${req.url}" by ${req.hostname}`);
@@ -51,6 +52,7 @@ app.post("/auth/register", (req, res, next) => __awaiter(void 0, void 0, void 0,
 app.post("/auth/login", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req.body;
+        console.log(body);
         const loginResult = yield (0, authService_1.login)(body);
         res.status(200).json(loginResult);
     }

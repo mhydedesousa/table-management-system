@@ -16,11 +16,12 @@ import {
   insertIntoTable,
 } from "./services/tableService";
 import { getOrders } from "./services/orderService";
+import config from "./config";
 
 dotenv.config({ path: ".env" });
 
 const app: Express = express();
-const port = process.env.PORT;
+const port = config.PORT;
 
 // request logger
 app.use((req: Request, _res: Response, next: NextFunction) => {
@@ -59,6 +60,7 @@ app.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const body = req.body as LoginUserDTO;
+      console.log(body);
       const loginResult = await login(body);
       res.status(200).json(loginResult);
     } catch (e: any) {
@@ -75,7 +77,7 @@ app.use((req, res, next) => {
 
   jwt.verify(
     req.headers.authorization,
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET as string,
     (err, decoded) => {
       if (err) {
         throw new Unauthorized("Invalid credentials");
